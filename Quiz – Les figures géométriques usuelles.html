@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quiz – Les figures géométriques usuelles</title>
+<style>
+:root{--bg:#f4f7fb;--card:#ffffff;--ink:#1c2740;--muted:#5d6b86;--line:#dbe3f0;--brand:#2563eb;--brand2:#7c3aed;--ok:#16a34a;--okbg:#e8f8ee;--ko:#dc2626;--kobg:#fdecec;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1524;--card:#18203a;--ink:#eaf0ff;--muted:#9fb0d0;--line:#2b3658;--brand:#60a5fa;--brand2:#a78bfa;--ok:#4ade80;--okbg:#12301f;--ko:#f87171;--kobg:#3a1717}}
+:root[data-theme="dark"]{--bg:#0f1524;--card:#18203a;--ink:#eaf0ff;--muted:#9fb0d0;--line:#2b3658;--brand:#60a5fa;--brand2:#a78bfa;--ok:#4ade80;--okbg:#12301f;--ko:#f87171;--kobg:#3a1717}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",system-ui,-apple-system,Roboto,sans-serif;line-height:1.5;min-height:100vh}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 40px}
+header{text-align:center;margin-bottom:18px}
+.tag{display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.04em;color:#fff;background:linear-gradient(90deg,var(--brand),var(--brand2));padding:4px 12px;border-radius:99px}
+h1{font-size:1.45rem;margin:10px 0 2px}
+.sub{color:var(--muted);font-size:.9rem;margin:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px 18px;box-shadow:0 8px 30px rgba(30,60,120,.10)}
+.bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden;margin-bottom:6px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand),var(--brand2));transition:width .4s}
+.meta{display:flex;justify-content:space-between;color:var(--muted);font-size:.82rem;margin-bottom:14px}
+.q{font-size:1.15rem;font-weight:650;margin:0 0 12px}
+.fig{display:flex;justify-content:center;margin:6px 0 14px;overflow-x:auto}
+.fig svg{max-width:100%;height:auto;background:var(--bg);border-radius:12px;border:1px solid var(--line)}
+.opts{display:grid;gap:10px}
+.opt{font:inherit;color:inherit;text-align:left;background:var(--bg);border:2px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;display:flex;gap:12px;align-items:center;transition:.15s}
+.opt:hover:not(:disabled){border-color:var(--brand);transform:translateY(-1px)}
+.opt b{flex:none;width:28px;height:28px;border-radius:50%;background:var(--card);border:2px solid var(--line);display:grid;place-items:center;font-size:.8rem}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}.opt.ok b{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt.ko{border-color:var(--ko);background:var(--kobg)}.opt.ko b{background:var(--ko);border-color:var(--ko);color:#fff}
+.opt:disabled{cursor:default}
+.why{margin-top:14px;padding:12px 14px;border-radius:14px;font-size:.95rem;border-left:5px solid var(--ok);background:var(--okbg)}
+.why.ko{border-color:var(--ko);background:var(--kobg)}
+.btn{font:inherit;font-weight:700;color:#fff;background:linear-gradient(90deg,var(--brand),var(--brand2));border:0;border-radius:14px;padding:13px 22px;cursor:pointer;margin-top:16px;width:100%;font-size:1rem}
+.btn:active{transform:scale(.98)}
+.center{text-align:center}
+.big{font-size:3.2rem;margin:4px 0}
+.score{font-size:2.4rem;font-weight:800;background:linear-gradient(90deg,var(--brand),var(--brand2));-webkit-background-clip:text;background-clip:text;color:transparent}
+ul.rec{text-align:left;padding-left:20px;color:var(--muted);font-size:.95rem}
+.hide{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<span class="tag">1ère Année Collège · Séance 4</span>
+<h1>Les figures géométriques usuelles</h1>
+<p class="sub">Reconnaître · nommer · appartenance · alignement</p>
+</header>
+<div class="card" id="app"></div>
+</div>
+<script>
+var X=function(x,y){return '<path d="M'+(x-5)+' '+(y-5)+'L'+(x+5)+' '+(y+5)+'M'+(x+5)+' '+(y-5)+'L'+(x-5)+' '+(y+5)+'" stroke="#2563eb" stroke-width="2.4" stroke-linecap="round"/>'};
+var T=function(x,y,t){return '<text x="'+x+'" y="'+y+'" font-size="15" font-weight="700" fill="currentColor">'+t+'</text>'};
+var S=function(b){return '<svg viewBox="0 0 300 120" width="300" height="120" style="color:var(--ink)">'+b+'</svg>'};
+var L=function(a,b,c,d){return '<line x1="'+a+'" y1="'+b+'" x2="'+c+'" y2="'+d+'" stroke="currentColor" stroke-width="2"/>'};
+var DL=function(a,b,c,d){return '<line x1="'+a+'" y1="'+b+'" x2="'+c+'" y2="'+d+'" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 4"/>'};
+var Pt=function(x,y,l,dx,dy){return X(x,y)+T(x+(dx==null?7:dx),y+(dy==null?-8:dy),l)};
+var fD1=S(L(10,100,290,28)+Pt(90,80,'A')+Pt(200,51,'B'));
+var fD2=S(L(10,40,290,95)+Pt(80,54,'E')+Pt(210,79,'F'));
+var fH1=S(L(70,85,290,35)+Pt(70,85,'A',-4,20)+Pt(170,62,'B'));
+var fH2=S(L(230,40,10,95)+Pt(230,40,'M',6,-10)+Pt(120,67,'N'));
+var fS1=S(L(60,90,230,45)+Pt(60,90,'A',-4,20)+Pt(230,45,'B',6,-8));
+var fS2=S(L(50,45,240,95)+Pt(50,45,'T',-4,-10)+Pt(240,95,'R',6,-8));
+var fXY=S(L(15,60,285,60)+T(12,48,'x')+T(276,48,'y')+Pt(150,60,'A',-4,-14));
+var F9=S(L(20,95,285,25)+T(30,70,'(d)')+Pt(230,37,'D')+Pt(110,95,'C'));
+var fAp=S(L(20,40,285,95)+T(30,28,'(d)')+Pt(80,52,'M')+Pt(190,50,'N'));
+var F10=S(L(20,100,285,20)+Pt(70,85,'A')+Pt(150,60,'B')+Pt(235,35,'C')+Pt(170,105,'D'));
+var fAl=S(DL(60,90,240,85)+Pt(60,90,'E',-4,18)+Pt(150,35,'F')+Pt(240,85,'G',6,18));
+var ID=["Une droite","Une demi-droite","Un segment"];
+var wD="Elle se prolonge des deux côtés sans s’arrêter : c’est une droite. Elle n’a pas de longueur.";
+var wH="Elle commence en un point (son origine) et se prolonge d’un seul côté : c’est une demi-droite.";
+var wS="Elle est limitée par deux extrémités : c’est un segment, on peut mesurer sa longueur.";
+var Q=[
+{t:"Reconnaître une droite",q:"Quelle est cette figure ?",f:fD2,o:ID,a:0,w:wD},
+{t:"Reconnaître une demi-droite",q:"Quelle est cette figure ?",f:fH1,o:ID,a:1,w:wH},
+{t:"Reconnaître un segment",q:"Quelle est cette figure ?",f:fS2,o:ID,a:2,w:wS},
+{t:"Reconnaître une demi-droite",q:"Quelle est cette figure ?",f:fH2,o:ID,a:1,w:wH},
+{t:"Notation d’une droite",q:"Quel est le nom de cette figure ?",f:fD1,o:["(AB)","[AB)","[AB]","AB"],a:0,w:"C’est la droite qui passe par A et B : on la note (AB)."},
+{t:"Notation d’un segment",q:"Quel est le nom de cette figure ?",f:fS1,o:["(AB)","[AB)","[AB]","[BA)"],a:2,w:"Le segment d’extrémités A et B se note [AB]. Sa longueur se note AB."},
+{t:"Notation d’une demi-droite",q:"Quel est le nom de cette figure ?",f:fH1,o:["(AB)","[AB)","[AB]","[BA)"],a:1,w:"La demi-droite d’origine A qui contient B se note [AB)."},
+{t:"Les deux demi-droites d’un point",q:"Comment note-t-on les deux demi-droites d’origine A ?",f:fXY,o:["[Ax) et [Ay)","(Ax) et (Ay)","[Ax] et [Ay]","[xA) et [yA)"],a:0,w:"Tout point A d’une droite définit deux demi-droites de même origine A : [Ax) et [Ay)."},
+{t:"Appartenance à une droite",q:"Le point D appartient-il à la droite (d) ?",f:F9,o:["D ∈ (d)","D ∉ (d)"],a:0,w:"D est sur la droite : D appartient à (d), on note D ∈ (d)."},
+{t:"Appartenance à une droite",q:"Le point C appartient-il à la droite (d) ?",f:F9,o:["C ∈ (d)","C ∉ (d)"],a:1,w:"C n’est pas sur la droite : C n’appartient pas à (d), on note C ∉ (d)."},
+{t:"Appartenance à une droite",q:"Quelle affirmation est correcte ?",f:fAp,o:["M ∈ (d) et N ∉ (d)","M ∉ (d) et N ∈ (d)","M ∈ (d) et N ∈ (d)","M ∉ (d) et N ∉ (d)"],a:0,w:"M est sur la droite (d), donc M ∈ (d). N est en dehors : N ∉ (d)."},
+{t:"Points alignés",q:"Quels points sont alignés ?",f:F10,o:["A, B et D","A, B et C","B, C et D","A, C et D"],a:1,w:"Des points alignés appartiennent à une même droite. A, B et C sont alignés ; D n’est pas sur cette droite."},
+{t:"Points alignés",q:"Les points E, F et G sont-ils alignés ?",f:fAl,o:["Oui, ils sont alignés","Non, ils ne sont pas alignés"],a:1,w:"F n’est pas sur la droite (EG) : un seul point en dehors suffit pour que les points ne soient pas alignés."}
+];
+var app=document.getElementById('app'),i=0,score=0,miss=[],order=[];
+function shuffle(a){for(var k=a.length-1;k>0;k--){var j=Math.floor(Math.random()*(k+1)),t=a[k];a[k]=a[j];a[j]=t}return a}
+function start(){i=0;score=0;miss=[];order=shuffle(Q.map(function(_,k){return k}));
+app.innerHTML='<div class="center"><div class="big">📐</div><h2 style="margin:0 0 8px">Prêt(e) à tester ta mémoire ?</h2><p style="color:var(--muted);margin:0">'+Q.length+' questions sur la 1ʳᵉ partie du cours. Lis bien, choisis une réponse et découvre l’explication tout de suite.</p><button class="btn" id="go">Commencer</button></div>';
+document.getElementById('go').onclick=show}
+function show(){var d=Q[order[i]],idx=shuffle(d.o.map(function(_,k){return k}));
+var h='<div class="bar"><i style="width:'+(i/Q.length*100)+'%"></i></div><div class="meta"><span>Question '+(i+1)+' / '+Q.length+'</span><span>Score : '+score+'</span></div><p class="q">'+d.q+'</p>';
+if(d.f)h+='<div class="fig">'+d.f+'</div>';
+h+='<div class="opts">';
+idx.forEach(function(k,n){h+='<button class="opt" data-k="'+k+'"><b>'+'ABCD'[n]+'</b><span>'+d.o[k]+'</span></button>'});
+h+='</div><div id="fb"></div>';app.innerHTML=h;
+var bs=app.querySelectorAll('.opt');
+bs.forEach(function(b){b.onclick=function(){var k=+b.dataset.k,good=k===d.a;
+bs.forEach(function(x){x.disabled=true;if(+x.dataset.k===d.a)x.classList.add('ok')});
+if(good)score++;else{b.classList.add('ko');if(miss.indexOf(d.t)<0)miss.push(d.t)}
+var last=i===Q.length-1;
+document.getElementById('fb').innerHTML='<div class="why'+(good?'':' ko')+'"><strong>'+(good?'✅ Bravo !':'❌ Pas tout à fait.')+'</strong> '+d.w+'</div><button class="btn" id="nx">'+(last?'Voir mon résultat':'Question suivante →')+'</button>';
+document.getElementById('nx').onclick=function(){i++;last?end():show()}}})}
+function end(){var p=score/Q.length,m=p>=.9?['🏆','Excellent ! Tu maîtrises le cours.']:p>=.7?['🎉','Très bien ! Encore un petit coup d’œil aux erreurs.']:p>=.5?['💪','Bon début. Relis le cours et réessaie.']:['📘','Relis attentivement le cours, puis recommence.'];
+var h='<div class="center"><div class="big">'+m[0]+'</div><div class="score">'+score+' / '+Q.length+'</div><p style="font-weight:650">'+m[1]+'</p></div>';
+if(miss.length){h+='<p style="margin:14px 0 4px;font-weight:650">À revoir :</p><ul class="rec">';miss.forEach(function(t){h+='<li>'+t+'</li>'});h+='</ul>'}
+h+='<button class="btn" id="re">Recommencer</button>';app.innerHTML=h;document.getElementById('re').onclick=start}
+start();
+</script>
+</body>
+</html>
